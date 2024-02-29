@@ -1,6 +1,9 @@
-package src.bomberman;
+package src.bomberman.entity;
 
 import javax.swing.*;
+
+import src.bomberman.Game;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -48,7 +51,7 @@ public class Player {
         return true; // Implementa la lógica de colisión aquí
     }
 
-    protected void draw(Graphics g) { 
+    public void draw(Graphics g) { 
         g.setColor(Color.RED);
         g.fillRect(x, y, 50, 50);
     }

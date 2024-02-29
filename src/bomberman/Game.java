@@ -4,6 +4,12 @@ import java.awt.Graphics;
 
 import javax.swing.*;
 
+import src.bomberman.components.Keyboard;
+import src.bomberman.entity.Block;
+import src.bomberman.entity.Bomb;
+import src.bomberman.entity.Player;
+import src.bomberman.entity.Wall;
+
 public class Game {
     private JFrame frame;
     private Timer timer;
@@ -31,11 +37,15 @@ public class Game {
         frame.setVisible(true);
     }
 
+    public void update( ) {
+        player.update();
+    }
+
     public void start() {
         player = new Player(this);
 
         timer = new Timer(1000 / 10, e -> {
-            player.update();
+            update();
 
             gamePanel.repaint();
         });

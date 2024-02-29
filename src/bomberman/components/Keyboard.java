@@ -1,4 +1,4 @@
-package src.bomberman;
+package src.bomberman.components;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
