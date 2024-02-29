@@ -9,14 +9,18 @@ import java.awt.event.KeyEvent;
 
 public class Player {
     private Game game;
-    private int x = 50;
-    private int y = 50;
+    private int x;
+    private int y;
+    private int w;
+    private int h;
     private int speed = 5;
 
-    public Player( Game game ) {
-        // Constructor del jugador
-
+    public Player( Game game, int x, int y, int w, int h ) {
         this.game = game;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
     }
 
 
@@ -24,13 +28,13 @@ public class Player {
         if (game.keyboard.isDown("LEFT_ARROW")) {
             move(-speed, 0);
         }
-        if (game.keyboard.isDown("RIGHT_ARROW")) {
+        else if (game.keyboard.isDown("RIGHT_ARROW")) {
             move(speed, 0);
         }
-        if (game.keyboard.isDown("UP_ARROW")) {
+        else if (game.keyboard.isDown("UP_ARROW")) {
             move(0, -speed);
         }
-        if (game.keyboard.isDown("DOWN_ARROW")) {
+        else if (game.keyboard.isDown("DOWN_ARROW")) {
             move(0, speed);
         }
     }
@@ -53,7 +57,7 @@ public class Player {
 
     public void draw(Graphics g) { 
         g.setColor(Color.RED);
-        g.fillRect(x, y, 50, 50);
+        g.fillRect(x, y, w, h);
     }
 
 
