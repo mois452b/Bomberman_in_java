@@ -17,11 +17,11 @@ public class Game {
     private Timer timer;
     private GamePanel gamePanel; // Nuevo panel para el juego
 
-    private ArrayList<Player> players;
-    // private ArrayList<Monster> monsters;
-    private ArrayList<Bomb> bombs;
-    private ArrayList<Block> blocks;
-    private ArrayList<Wall> walls;
+    public ArrayList<Player> players;
+    // public ArrayList<Monster> monsters;
+    public ArrayList<Bomb> bombs;
+    public ArrayList<Block> blocks;
+    public ArrayList<Wall> walls;
 
     public Keyboard keyboard;
 
@@ -78,22 +78,26 @@ public class Game {
         // Generar posiciones aleatorias para los bloques
         for( int x = 1; x < cols-1; x++ ) {
             for( int y = 1; y < rows-1; y++ ) {
-                boolean cellIsFree = true;
-                for( Wall wall : walls ) {
-                    if( x == wall.x / tileSize && y == wall.y / tileSize ) {
-                        cellIsFree = false;
-                        break;
-                    }
-                }
+                final int xPos = x;
+                final int yPos = y;
+                boolean cellIsFree = walls.stream().noneMatch(wall -> xPos == wall.x / tileSize && yPos == wall.y / tileSize);
 
                 boolean canPlaceBlock = getRandomInt( 0, 100 ) < 30;
                 if( cellIsFree && canPlaceBlock ) {
-                    blocks.add( new Block( x*tileSize, y*tileSize, tileSize, tileSize ));
+                    blocks.add( new Block( this, x*tileSize, y*tileSize, tileSize, tileSize ));
                 }
             };
         }
 
         players.add( new Player( this, 50, 50, 50, 50 ) );
+        //destruimos los bloques que estan a al menos 2 bloques de distancia del player
+        for (Block block : blocks) {
+            for (Player player : players) {
+                if (Math.abs(block.x - player.x) <= 2 * tileSize && Math.abs(block.y - player.y) <= 2 * tileSize) {
+                    block.destroy();
+                }
+            }
+        }
         
     }
     

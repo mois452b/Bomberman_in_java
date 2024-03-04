@@ -9,11 +9,11 @@ import java.awt.event.KeyEvent;
 
 public class Player {
     private Game game;
-    private int x;
-    private int y;
-    private int w;
-    private int h;
-    private int speed = 5;
+    public int x;
+    public int y;
+    public int w;
+    public int h;
+    public int speed = 5;
 
     public Player( Game game, int x, int y, int w, int h ) {
         this.game = game;
