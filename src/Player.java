@@ -21,8 +21,9 @@ public class Player {
 
     private int spriteW = 18;
     private int spriteH = 26;
+    private Types.CellType[][] map;
 
-    public Player(int x, int y, int w, int h, int speed, int indexX, int indexY) {
+    public Player(int x, int y, int w, int h, int speed, Types.CellType[][] map ) {
         this.x = x;
         this.y = y;
         this.w = w;
@@ -37,6 +38,46 @@ public class Player {
 
         this.direction = Types.Directions.NONE;
         this.lastDirections = Types.Directions.DOWN;
+
+        this.map = map;
+    }
+    public int getLeft( ) {
+        return x;
+    }
+
+    public int getRight( ) {
+        return x + w;
+    }
+
+    public int getTop( ) {
+        return y;
+    }
+
+    public int getBottom( ) {
+        return y + h;
+    }
+
+    public boolean validateMovement( Types.CellType[][] map ) {
+        //iteramos el map
+        for( int x = 0; x < map.length; x++ ) {
+            for( int y = 0; y < map[x].length; y++ ) {
+                if( map[x][y] == Types.CellType.BREAKABLE || map[x][y] == Types.CellType.WALL ) {
+                    if( this.direction == Types.Directions.UP )
+                        dy = -speed;
+                    else if( this.direction == Types.Directions.DOWN )
+                        dy = speed;
+                    else if( this.direction == Types.Directions.LEFT )
+                        dx = -speed;
+                    else if( this.direction == Types.Directions.RIGHT )
+                        dx = speed;
+                    
+                    if( this.getRight() > x*50 && this.getLeft( ) < (x+1)*50 && this.getBottom( ) > y*50 && this.getTop( ) < (y+1)*50 ) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public void draw( Graphics g, Image spriteSheet ) {
@@ -44,12 +85,12 @@ public class Player {
         int spriteX = indexX * spriteW;
         int spriteY = indexY * spriteH;
         int x =  this.cx - spriteW*3/2;
-        int y =  this.cy - spriteH*3/2;
+        int y =  this.cy - spriteH*2;
 
         g.drawImage(spriteSheet, x, y, x + spriteW*3, y + spriteH*3, spriteX, spriteY, spriteX + spriteW, spriteY + spriteH, null);
 
         g.setColor(Color.ORANGE);
-        g.fillRect(x, y, w, h);
+        g.fillRect(cx-w/2, cy-h/2, w, h);
 
     }
 
@@ -60,9 +101,14 @@ public class Player {
     public void move( int dx, int dy ) {
         this.x += dx;
         this.y += dy;
+
+        if( !validateMovement( map ) ) {
+            this.x -= dx;
+            this.y -= dy;
+        }
     }
 
-    public void update( ) {
+    public void update( int time ) {
         this.cx = x + w/2;
         this.cy = y + h/2;
         switch( this.direction ) {
@@ -128,5 +174,7 @@ public class Player {
                 }
                 break;
         }
+        // this.x += dx;
+        // this.y += dy;
     }
 }
