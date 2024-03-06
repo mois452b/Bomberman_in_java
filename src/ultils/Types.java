@@ -6,4 +6,12 @@ public class Types {
         WALL,
         BREAKABLE
     }
+
+    public static enum Directions {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        NONE
+    }
 }
