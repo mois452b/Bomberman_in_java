@@ -9,23 +9,25 @@ import src.ultils.Types;
 
 
 public class Scene {
-    private Timer timer;
 
     public int rows;
     public int cols;
     public Types.CellType[][] map;
-    public UI ui;
+    public Player player;
 
 
-    public Scene( UI ui ) {
+    public Scene(  ) {
         this.rows = 13;
         this.cols = 23;
-
-        this.ui = ui;
     }
 
     public void update() {
-        // System.out.println( "update" );
+        // System.out.println("updated");
+        player.update( );
+    }
+
+    public void addNewPlayer( ) {
+        player = new Player( 50, 50, 100/3, 100/3, 5, 1, 1 );
     }
 
     public Types.CellType[][] generateMap() {
