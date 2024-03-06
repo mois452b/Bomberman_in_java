@@ -3,6 +3,7 @@ package src;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import src.bomberman.components.Keyboard;
 import src.ultils.Types;
 
 import java.awt.*;
@@ -11,8 +12,14 @@ import java.io.IOException;
 
 public class UI {
     private GamePanel gamePanel;
-    private JFrame frame;
     private Scene scene;
+
+    public JFrame frame;
+
+    public Image wall;
+    public Image block;
+    public Image floor;
+    public Image playerSpriteSheet;
 
     public UI() {
         frame = new JFrame("Bomberman");
@@ -24,6 +31,16 @@ public class UI {
         frame.add(gamePanel);
 
         frame.setVisible(true);
+
+        try {
+            wall = ImageIO.read(new File("resource/bmpSolido.png"));
+            block = ImageIO.read(new File("resource/bmpDestruible.png"));
+            floor = ImageIO.read(new File("resource/bmpSuelo.png"));
+            playerSpriteSheet = ImageIO.read( new File("resource/Jugador.png") );
+            
+        } catch( IOException e ) {
+            e.printStackTrace();
+        }
     }
 
     public void repaint( ) {
@@ -39,25 +56,20 @@ public class UI {
             for( int y = 0; y < scene.rows; y++ ) {
                 Types.CellType cellType = baseMap[x][y];
                 if( cellType == Types.CellType.WALL ) {
-                    drawImage( g, "bmpSolido.png", x * 50, y * 50 );
+                    drawImage( g, wall, x * 50, y * 50 );
                 }
                 else if( cellType == Types.CellType.BREAKABLE ) {
-                    drawImage( g, "bmpDestruible.png", x * 50, y * 50 );
+                    drawImage( g, block, x * 50, y * 50 );
                 }
                 else if( cellType == Types.CellType.EMPTY ) {
-                    drawImage( g, "bmpSuelo.png", x * 50, y * 50 );
+                    drawImage( g, floor, x * 50, y * 50 );
                 }
             }
         }
     }
 
-    private void drawImage(Graphics g, String filename, int x, int y) {
-        try {
-            Image image = ImageIO.read(new File("resource/" + filename));
+    public void drawImage(Graphics g, Image image, int x, int y) {
             g.drawImage(image, x, y, 50, 50, null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private class GamePanel extends JPanel {
@@ -65,6 +77,8 @@ public class UI {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             drawBase( g, scene.map );
+                scene.player.draw( g, playerSpriteSheet );
+                
         }
     }
 }
