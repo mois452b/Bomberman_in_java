@@ -4,7 +4,8 @@ public class Types {
     public static enum CellType {
         EMPTY,
         WALL,
-        BREAKABLE
+        BREAKABLE,
+        BOMB
     }
 
     public static enum Directions {
@@ -13,5 +14,11 @@ public class Types {
         LEFT,
         RIGHT,
         NONE
+    }
+
+    public static enum BombStates {
+        NORMAL,
+        EXPLODING,
+        EXPLODED
     }
 }

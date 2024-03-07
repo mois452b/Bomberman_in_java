@@ -1,6 +1,7 @@
 package src;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import src.ultils.Types;
 
@@ -23,6 +24,9 @@ public class Player {
     private int spriteH = 26;
     private Types.CellType[][] map;
 
+    private ArrayList<Bomb> bombs;
+    private int maxBombs = 1;
+
     public Player(int x, int y, int w, int h, int speed, Types.CellType[][] map ) {
         this.x = x;
         this.y = y;
@@ -40,6 +44,7 @@ public class Player {
         this.lastDirections = Types.Directions.DOWN;
 
         this.map = map;
+        this.bombs = new ArrayList<Bomb>();
     }
     public int getLeft( ) {
         return x;
@@ -58,7 +63,6 @@ public class Player {
     }
 
     public boolean validateMovement( Types.CellType[][] map ) {
-        //iteramos el map
         for( int x = 0; x < map.length; x++ ) {
             for( int y = 0; y < map[x].length; y++ ) {
                 if( map[x][y] == Types.CellType.BREAKABLE || map[x][y] == Types.CellType.WALL ) {
@@ -98,6 +102,19 @@ public class Player {
         this.direction = direction;
     }
 
+    public void placeBomb( ) {
+        Scene scene = Scene.getScene();
+        int x = (int)Math.floor( this.cx / 50.0 );
+        int y = (int)Math.floor( this.cy / 50.0 );
+
+        if( this.bombs.size() < maxBombs && scene.map[x][y] == Types.CellType.EMPTY ) {
+            System.out.println("added bomb");
+            Bomb bomb = new Bomb( x, y );
+            this.bombs.add( bomb );
+            scene.addBomb( bomb );
+        }
+    }
+
     public void move( int dx, int dy ) {
         this.x += dx;
         this.y += dy;
@@ -108,7 +125,7 @@ public class Player {
         }
     }
 
-    public void update( int time ) {
+    public void update( long deltaTime ) {
         this.cx = x + w/2;
         this.cy = y + h/2;
         switch( this.direction ) {

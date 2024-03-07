@@ -14,12 +14,14 @@ public class Controller {
     Timer timer;
 
     Keyboard keyboard;
-    public int tStart = 0;
-    public int tEnd = 0;
+
+    long tStart = 0;
+    long tEnd = 0;
 
     public Controller( ) {
         ui = new UI( );
-        scene = new Scene( );
+        scene = Scene.getScene( );
+        ui.setScene( scene );
 
         keyboard = new Keyboard();
         ui.frame.addKeyListener(keyboard);
@@ -29,12 +31,15 @@ public class Controller {
         scene.generateMap( );
         scene.addNewPlayer( );
 
-        ui.setScene( scene );
 
         this.timer = new Timer( 1000/10 , e -> {
             if( tStart != tEnd ) return;
-            tStart++;
-            System.out.println(tStart);
+            tStart = System.currentTimeMillis( );
+            // System.out.println(tStart-tEnd);
+
+            if( keyboard.isDown("SPACE") ) {
+                scene.player.placeBomb( );
+            }
             if (keyboard.isDown("LEFT_ARROW")) {
                 scene.player.setDirection( Types.Directions.LEFT );
             } else if (keyboard.isDown("RIGHT_ARROW")) {
@@ -47,7 +52,7 @@ public class Controller {
                 scene.player.setDirection( Types.Directions.NONE );
             }
 
-            scene.update( );
+            scene.update( tStart-tEnd );
             ui.repaint( );
             tEnd = tStart;
         });

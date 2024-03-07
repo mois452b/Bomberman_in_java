@@ -20,6 +20,7 @@ public class UI {
     public Image block;
     public Image floor;
     public Image playerSpriteSheet;
+    public Image bombSpriteSheet;
 
     public UI() {
         frame = new JFrame("Bomberman");
@@ -37,6 +38,7 @@ public class UI {
             block = ImageIO.read(new File("resource/bmpDestruible.png"));
             floor = ImageIO.read(new File("resource/bmpSuelo.png"));
             playerSpriteSheet = ImageIO.read( new File("resource/Jugador.png") );
+            bombSpriteSheet = ImageIO.read( new File("resource/bomba.png") );
             
         } catch( IOException e ) {
             e.printStackTrace();
@@ -61,7 +63,7 @@ public class UI {
                 else if( cellType == Types.CellType.BREAKABLE ) {
                     drawImage( g, block, x * 50, y * 50 );
                 }
-                else if( cellType == Types.CellType.EMPTY ) {
+                else {
                     drawImage( g, floor, x * 50, y * 50 );
                 }
             }
@@ -69,15 +71,21 @@ public class UI {
     }
 
     public void drawImage(Graphics g, Image image, int x, int y) {
-            g.drawImage(image, x, y, 50, 50, null);
+        g.drawImage(image, x, y, 50, 50, null);
     }
 
     private class GamePanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+            if( scene == null ) return;
             drawBase( g, scene.map );
-                scene.player.draw( g, playerSpriteSheet );
+            scene.player.draw( g, playerSpriteSheet );
+
+            for( Bomb bomb : scene.bombs ) {
+                // drawImage(g, bombSpriteSheet, bomb.x*50, bomb.y*50);
+                bomb.draw( g, bombSpriteSheet );
+            }
                 
         }
     }

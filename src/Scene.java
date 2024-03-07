@@ -1,5 +1,7 @@
 package src;
 
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 import src.bomberman.entity.Wall;
@@ -14,20 +16,39 @@ public class Scene {
     public int cols;
     public Types.CellType[][] map;
     public Player player;
+    public ArrayList<Bomb> bombs;
 
+    public static Scene scene;
 
     public Scene(  ) {
         this.rows = 13;
         this.cols = 23;
+
+        this.bombs = new ArrayList<Bomb>();
     }
 
-    public void update() {
+    public static Scene getScene( ) {
+        if( scene == null ) scene = new Scene( );
+        return scene;
+    }
+
+    public void addBomb( Bomb bomb ) {
+        bombs.add( bomb );
+        map[bomb.x][bomb.y] = Types.CellType.BOMB;
+    }
+
+    public void update( long deltaTime ) {
         // System.out.println("updated");
-        player.update( );
+        player.validateMovement( map );
+        player.update( deltaTime );
+
+        for( Bomb bomb : bombs ) {
+            bomb.update( deltaTime );
+        }
     }
 
     public void addNewPlayer( ) {
-        player = new Player( 50, 50, 100/3, 100/3, 5, 1, 1 );
+        player = new Player( 60, 60, 100/3, 100/3, 5, map );
     }
 
     public Types.CellType[][] generateMap() {
