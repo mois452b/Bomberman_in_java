@@ -43,6 +43,10 @@ public class Scene {
         map[bomb.x][bomb.y] = Types.CellType.EMPTY;
     }
 
+    public void destroyBlock( int x, int y ) {
+        map[x][y] = Types.CellType.EMPTY;
+    }
+
     public void update( long deltaTime ) {
         // System.out.println("updated");
         player.validateMovement( map );

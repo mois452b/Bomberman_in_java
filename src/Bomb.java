@@ -28,6 +28,7 @@ public class Bomb {
     private int spriteEY;
     private Player player;
 
+    public int range = 1;
 
     public Bomb( int x, int y, Player player ) {
         this.x = x;
@@ -57,7 +58,7 @@ public class Bomb {
         animate( );
         timeBeforeExplode -= deltaTime;
         if( timeBeforeExplode <= 0 ) {
-            // state = Types.BombStates.EXPLODING;
+            state = Types.BombStates.EXPLODING;
             explode( );
         }
     }
@@ -66,6 +67,43 @@ public class Bomb {
         Scene scene = Scene.getScene( );
         player.bombs.remove( this );
         scene.bombsToKill.add( this );
+
+        //Expandomos la explosion hacia arriba
+        for( int i = 1; i <= range; i++ ) {
+            Types.CellType cell = scene.map[this.x][this.y-i];
+            if( cell == Types.CellType.WALL ) break;
+            if( cell == Types.CellType.BREAKABLE ) {
+                scene.destroyBlock( this.x, this.y-i );
+                break;
+            }
+        }
+        //Expandomos la explosion hacia la derecha
+        for( int i = 1; i <= range; i++ ) {
+            Types.CellType cell = scene.map[this.x+i][this.y];
+            if( cell == Types.CellType.WALL ) break;
+            if( cell == Types.CellType.BREAKABLE ) {
+                scene.destroyBlock( this.x+i, this.y );
+                break;
+            }
+        }
+        //Expandomos la explosion hacia abajo
+        for( int i = 1; i <= range; i++ ) {
+            Types.CellType cell = scene.map[this.x][this.y+i];
+            if( cell == Types.CellType.WALL ) break;
+            if( cell == Types.CellType.BREAKABLE ) {
+                scene.destroyBlock( this.x, this.y+i );
+                break;
+            }
+        }
+        //Expandomos la explosion hacia izquierda
+        for( int i = 1; i <= range; i++ ) {
+            Types.CellType cell = scene.map[this.x-i][this.y];
+            if( cell == Types.CellType.WALL ) break;
+            if( cell == Types.CellType.BREAKABLE ) {
+                scene.destroyBlock( this.x-i, this.y );
+                break;
+            }
+        }
     }
 
     public void animate( ) {
