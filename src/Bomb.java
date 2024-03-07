@@ -26,19 +26,22 @@ public class Bomb {
 
     private int spriteEW;
     private int spriteEY;
+    private Player player;
 
 
-    public Bomb( int x, int y ) {
+    public Bomb( int x, int y, Player player ) {
         this.x = x;
         this.y = y;
         this.w = 50;
         this.h = 50;
 
+        this.player = player;
+
         this.createdAt = System.currentTimeMillis();
 
         this.state = Types.BombStates.NORMAL;
         this.indexX = 0;
-        this.timeBeforeExplode = 0;
+        this.timeBeforeExplode = 5000;
     }
 
     public void draw( Graphics g, Image image ) {
@@ -50,8 +53,19 @@ public class Bomb {
         return map[x][y] == Types.CellType.EMPTY;
     }
 
-    public void update( long time ) {
+    public void update( long deltaTime ) {
         animate( );
+        timeBeforeExplode -= deltaTime;
+        if( timeBeforeExplode <= 0 ) {
+            // state = Types.BombStates.EXPLODING;
+            explode( );
+        }
+    }
+
+    public void explode( ) {
+        Scene scene = Scene.getScene( );
+        player.bombs.remove( this );
+        scene.bombsToKill.add( this );
     }
 
     public void animate( ) {

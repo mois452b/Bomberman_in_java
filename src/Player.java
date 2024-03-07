@@ -24,8 +24,8 @@ public class Player {
     private int spriteH = 26;
     private Types.CellType[][] map;
 
-    private ArrayList<Bomb> bombs;
     private int maxBombs = 1;
+    public ArrayList<Bomb> bombs;
 
     public Player(int x, int y, int w, int h, int speed, Types.CellType[][] map ) {
         this.x = x;
@@ -109,7 +109,7 @@ public class Player {
 
         if( this.bombs.size() < maxBombs && scene.map[x][y] == Types.CellType.EMPTY ) {
             System.out.println("added bomb");
-            Bomb bomb = new Bomb( x, y );
+            Bomb bomb = new Bomb( x, y, this );
             this.bombs.add( bomb );
             scene.addBomb( bomb );
         }

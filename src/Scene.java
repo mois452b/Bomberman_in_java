@@ -17,6 +17,7 @@ public class Scene {
     public Types.CellType[][] map;
     public Player player;
     public ArrayList<Bomb> bombs;
+    public ArrayList<Bomb> bombsToKill = new ArrayList<Bomb>();
 
     public static Scene scene;
 
@@ -37,6 +38,11 @@ public class Scene {
         map[bomb.x][bomb.y] = Types.CellType.BOMB;
     }
 
+    public void removeBomb( Bomb bomb ) {
+        bombs.remove( bomb );
+        map[bomb.x][bomb.y] = Types.CellType.EMPTY;
+    }
+
     public void update( long deltaTime ) {
         // System.out.println("updated");
         player.validateMovement( map );
@@ -45,6 +51,10 @@ public class Scene {
         for( Bomb bomb : bombs ) {
             bomb.update( deltaTime );
         }
+        for( Bomb bomb : bombsToKill ) {
+            removeBomb( bomb );
+        }
+        bombsToKill = new ArrayList<Bomb>();        
     }
 
     public void addNewPlayer( ) {
