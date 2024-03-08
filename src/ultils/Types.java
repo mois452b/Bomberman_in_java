@@ -21,4 +21,12 @@ public class Types {
         EXPLODING,
         EXPLODED
     }
+
+    public static enum PowerUpType {
+        LIFE,
+        SPEED,
+        BOMB,
+        CALAVERA,
+        PUSH_BOMB
+    }
 }

@@ -19,6 +19,9 @@ public class Scene {
     public ArrayList<Bomb> bombs;
     public ArrayList<Bomb> bombsToKill = new ArrayList<Bomb>();
 
+    public ArrayList<PowerUps> powerUps = new ArrayList<PowerUps>();
+    public ArrayList<PowerUps> powerUpsToKill = new ArrayList<PowerUps>();
+
     public static Scene scene;
 
     public Scene(  ) {
@@ -45,6 +48,10 @@ public class Scene {
 
     public void destroyBlock( int x, int y ) {
         map[x][y] = Types.CellType.EMPTY;
+        //hay una posibilidad del 50% de que suelte un powerup
+        if( random.getRandomInt( 0, 100 ) <= 33 ) {
+            powerUps.add( new PowerUps( x, y ) );
+        }
     }
 
     public void update( long deltaTime ) {
@@ -59,6 +66,14 @@ public class Scene {
             removeBomb( bomb );
         }
         bombsToKill = new ArrayList<Bomb>();        
+
+        for( PowerUps powerUp : powerUps ) {
+            powerUp.update( deltaTime );
+        }
+        // for( PowerUps powerUp : powerUpsToKill ) {
+        //     powerUps.remove( powerUp );
+        // }
+        // powerUpsToKill = new ArrayList<PowerUps>();
     }
 
     public void addNewPlayer( ) {

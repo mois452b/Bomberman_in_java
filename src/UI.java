@@ -21,6 +21,7 @@ public class UI {
     public Image floor;
     public Image playerSpriteSheet;
     public Image bombSpriteSheet;
+    public Image powerupsSpriteSheet;
 
     public UI() {
         frame = new JFrame("Bomberman");
@@ -37,6 +38,7 @@ public class UI {
             wall = ImageIO.read(new File("resource/bmpSolido.png"));
             block = ImageIO.read(new File("resource/bmpDestruible.png"));
             floor = ImageIO.read(new File("resource/bmpSuelo.png"));
+            powerupsSpriteSheet = ImageIO.read( new File("resource/bmpMejoras.png") );
             playerSpriteSheet = ImageIO.read( new File("resource/Jugador.png") );
             bombSpriteSheet = ImageIO.read( new File("resource/bomba.png") );
             
@@ -85,6 +87,10 @@ public class UI {
             for( Bomb bomb : scene.bombs ) {
                 // drawImage(g, bombSpriteSheet, bomb.x*50, bomb.y*50);
                 bomb.draw( g, bombSpriteSheet );
+            }
+
+            for( PowerUps powerUp : scene.powerUps ) {
+                powerUp.draw( g, powerupsSpriteSheet, scene.map );
             }
                 
         }
