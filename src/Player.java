@@ -66,14 +66,7 @@ public class Player {
         for( int x = 0; x < map.length; x++ ) {
             for( int y = 0; y < map[x].length; y++ ) {
                 if( map[x][y] == Types.CellType.BREAKABLE || map[x][y] == Types.CellType.WALL ) {
-                    if( this.direction == Types.Directions.UP )
-                        dy = -speed;
-                    else if( this.direction == Types.Directions.DOWN )
-                        dy = speed;
-                    else if( this.direction == Types.Directions.LEFT )
-                        dx = -speed;
-                    else if( this.direction == Types.Directions.RIGHT )
-                        dx = speed;
+                    
                     
                     if( this.getRight() > x*50 && this.getLeft( ) < (x+1)*50 && this.getBottom( ) > y*50 && this.getTop( ) < (y+1)*50 ) {
                         return false;
