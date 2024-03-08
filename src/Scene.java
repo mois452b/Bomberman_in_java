@@ -70,10 +70,10 @@ public class Scene {
         for( PowerUps powerUp : powerUps ) {
             powerUp.update( deltaTime );
         }
-        // for( PowerUps powerUp : powerUpsToKill ) {
-        //     powerUps.remove( powerUp );
-        // }
-        // powerUpsToKill = new ArrayList<PowerUps>();
+        for( PowerUps powerUp : powerUpsToKill ) {
+            powerUps.remove( powerUp );
+        }
+        powerUpsToKill = new ArrayList<PowerUps>();
     }
 
     public void addNewPlayer( ) {
