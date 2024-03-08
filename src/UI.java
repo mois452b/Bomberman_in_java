@@ -22,6 +22,7 @@ public class UI {
     public Image playerSpriteSheet;
     public Image bombSpriteSheet;
     public Image powerupsSpriteSheet;
+    public Image enemiesSpriteSheet;
 
     public UI() {
         frame = new JFrame("Bomberman");
@@ -41,6 +42,7 @@ public class UI {
             powerupsSpriteSheet = ImageIO.read( new File("resource/bmpMejoras.png") );
             playerSpriteSheet = ImageIO.read( new File("resource/Jugador.png") );
             bombSpriteSheet = ImageIO.read( new File("resource/bomba.png") );
+            enemiesSpriteSheet = ImageIO.read( new File("resource/bmpEnemigo.png") );
             
         } catch( IOException e ) {
             e.printStackTrace();
@@ -91,6 +93,10 @@ public class UI {
 
             for( PowerUps powerUp : scene.powerUps ) {
                 powerUp.draw( g, powerupsSpriteSheet, scene.map );
+            }
+
+            for( Enemy enemy : scene.enemies ) {
+                enemy.draw( g, enemiesSpriteSheet );
             }
                 
         }

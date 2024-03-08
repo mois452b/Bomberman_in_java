@@ -30,6 +30,7 @@ public class Controller {
     public void start() {
         scene.generateMap( );
         scene.addNewPlayer( );
+        scene.createEnemies( );
 
 
         this.timer = new Timer( 1000/10 , e -> {

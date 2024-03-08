@@ -22,6 +22,9 @@ public class Scene {
     public ArrayList<PowerUps> powerUps = new ArrayList<PowerUps>();
     public ArrayList<PowerUps> powerUpsToKill = new ArrayList<PowerUps>();
 
+    public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+    public ArrayList<Enemy> enemiesToKill = new ArrayList<Enemy>();
+
     public static Scene scene;
 
     public Scene(  ) {
@@ -46,11 +49,29 @@ public class Scene {
         map[bomb.x][bomb.y] = Types.CellType.EMPTY;
     }
 
+    public void addPowerUp( PowerUps powerUp ) {
+        powerUps.add( powerUp );
+        map[powerUp.x][powerUp.y] = Types.CellType.POWERUP;
+    }
+
+    public void removePowerUp( PowerUps powerUp ) {
+        powerUps.remove( powerUp );
+        map[powerUp.x][powerUp.y] = Types.CellType.EMPTY;
+    }
+
+    public void addEnemy( Enemy enemy ) {
+        enemies.add( enemy );
+    }
+
+    public void removeEnemy( Enemy enemy ) {
+        enemies.remove( enemy );
+    }
+
     public void destroyBlock( int x, int y ) {
         map[x][y] = Types.CellType.EMPTY;
         //hay una posibilidad del 50% de que suelte un powerup
-        if( random.getRandomInt( 0, 100 ) <= 33 ) {
-            powerUps.add( new PowerUps( x, y ) );
+        if( random.getRandomInt( 0, 100 ) <= 25 ) {
+            addPowerUp( new PowerUps( x, y ) );
         }
     }
 
@@ -71,13 +92,42 @@ public class Scene {
             powerUp.update( deltaTime );
         }
         for( PowerUps powerUp : powerUpsToKill ) {
-            powerUps.remove( powerUp );
+            removePowerUp( powerUp );
         }
         powerUpsToKill = new ArrayList<PowerUps>();
+
+        for( Enemy enemy : enemies ) {
+            enemy.update( deltaTime );
+        }
+        for( Enemy enemy : enemiesToKill ) {
+            removeEnemy( enemy );
+        }
+        enemiesToKill = new ArrayList<Enemy>();
     }
 
     public void addNewPlayer( ) {
         player = new Player( 60, 60, 100/3, 100/3, 5, map );
+    }
+
+    public void createEnemies( ) {
+        for( int y = 1; y < rows-1; y++ ) {
+            System.out.println(y%2);
+            for( int x = 1; x < cols-1; x++ ) {
+                if( map[x][y] == Types.CellType.EMPTY ) {
+                    int dx = 0;
+                    int dy = 0;
+                    if( y % 2 == 1 )
+                        dx = 1;
+                    else 
+                        dy = 1;
+
+                    if( random.getRandomInt( 0, 100 ) < 10 && random.distance( x*50+5, y*50+5, player.x, player.y ) > 100 ) {
+                        Enemy enemy = new Enemy( x*50+5, y*50+5, dx, dy, map );
+                        addEnemy( enemy );
+                    }
+                }
+            }
+        }
     }
 
     public Types.CellType[][] generateMap() {

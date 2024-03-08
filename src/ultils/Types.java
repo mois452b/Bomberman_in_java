@@ -5,7 +5,8 @@ public class Types {
         EMPTY,
         WALL,
         BREAKABLE,
-        BOMB
+        BOMB,
+        POWERUP
     }
 
     public static enum Directions {
